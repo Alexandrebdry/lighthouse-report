@@ -11,7 +11,14 @@ export const launchChromeAndRunLighthouse = async (url) => {
    }) ;
 
    const page = await browser.newPage();
-   const {lhr} = await lighthouse(url, undefined, undefined, page);
+   const {lhr} = await lighthouse(url, {
+       skipAudits: ["pwa"],
+       preset: "desktop",
+       quiet: true,
+       chromeFlags: ["--headless", "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage"],
+       disableFullPageScreenshot: true,
+       output: "json",
+   }, undefined, page);
    await browser.close();
 
    return lhr ;
