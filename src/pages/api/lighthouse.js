@@ -27,7 +27,6 @@ const handler = async (req,res) => {
     try {
 
         const urls = input ;
-        console.log("urls", urls)
 
         for (const url of urls) {
             data.push({
