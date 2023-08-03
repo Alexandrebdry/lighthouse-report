@@ -1,26 +1,20 @@
-import lighthouse from "@/pages/api/lighthouse";
-import * as chromeLauncher from "chrome-launcher";
-import * as fs from 'node:fs';
+import lighthouse from "lighthouse";
+import puppeteer from 'puppeteer';
+
 
 export const launchChromeAndRunLighthouse = async (url) => {
 
-    const chrome = await chromeLauncher.launch({ chromeFlags: ["--headless"] });
-    const options = {
-        logLevel: "info",
-        output: "json",
-        preset: "desktop",
-        skipAudits: ["pwa"],
-        disableFullPageScreenshot: true,
-        quit: true,
-        onlyCategories: ["performance"] ,
-        port: chrome.port
-    };
+   const browser = await puppeteer.launch({
+       headless: true,
+       defaultViewport: null,
+       ignoreDefaultArgs: ['--enable-automation'],
+   }) ;
 
-    const data = await lighthouse(url, options);
-    await chrome.kill();
+   const page = await browser.newPage();
+   const {lhr} = await lighthouse(url, undefined, undefined, page);
+   await browser.close();
 
-    return data.lhr ;
-
+   return lhr ;
 
 }
 
