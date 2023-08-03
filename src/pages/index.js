@@ -38,7 +38,7 @@ export default function Page() {
             return;
         }
         setLoading(true);
-        fetch('/api/lighthouse', {
+        fetch('https://lighthouse-report.vercel.app/api/lighthouse', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
